@@ -3,6 +3,7 @@ from abc import abstractmethod
 
 import numpy as np
 from matplotlib import pyplot as plt
+from numpy import ndarray
 
 
 class Graphic:
@@ -12,7 +13,7 @@ class Graphic:
         pass
 
     @abstractmethod
-    def grad(self, x: float, y: float) -> List[float]:
+    def grad(self, x: float, y: float) -> ndarray:
         pass
 
     def __call__(self, x: float, y: float) -> float:
@@ -35,13 +36,13 @@ class F(Graphic):
     def get(self, x: float, y: float) -> float:
         return x ** 2 + 4 * y ** 2 - 3 * x * y
 
-    def grad(self, x: float, y: float) -> List[float]:
-        return [2 * x - 3 * y, 8 * y - 3 * x]
+    def grad(self, x: float, y: float) -> ndarray:
+        return np.array([2 * x - 3 * y, 8 * y - 3 * x])
 
 
 class G(Graphic):
     def get(self, x: float, y: float) -> float:
         return x ** 2 + 4 * y ** 2 - 3 * x * y + 5 * x - y
 
-    def grad(self, x: float, y: float) -> List[float]:
-        return [2 * x - 3 * y + 5, 8 * y - 3 * x - 1]
+    def grad(self, x: float, y: float) -> ndarray:
+        return np.array([2 * x - 3 * y + 5, 8 * y - 3 * x - 1])
