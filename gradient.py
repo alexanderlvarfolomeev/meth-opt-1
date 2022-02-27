@@ -1,9 +1,9 @@
 import numpy as np
+from numpy import ndarray
 
 from graphic import Graphic
 from onedimsearch import OneDimensionSearch
 from steps import StepScheduler, RateStep, LinearStep, ParabolicStep
-from utils import norm
 
 
 def gradient_steps(
@@ -12,16 +12,16 @@ def gradient_steps(
         one_dimension: OneDimensionSearch,
         max_epoch: int,
         eps: float,
-        current_position
+        current_position: ndarray
 ) -> np.ndarray:
     points = np.ndarray(shape=(0, 2), dtype=float, order='F')
     points = np.append(points, [current_position], axis=0)
     for i in range(1, max_epoch):
-        G = function.grad(current_position[0], current_position[1])
+        G = function.grad(current_position)
         step = step_scheduler.step(i)
-        next_position = one_dimension.point(function, current_position, step, G)
+        next_position = one_dimension.point(function, current_position, step, G, eps)
         points = np.append(points, [next_position], axis=0)
-        if norm(G[0], G[1]) < eps:
+        if np.linalg.norm(G) < eps:
             return points
         current_position = next_position
     return points
@@ -32,7 +32,7 @@ def find_best_learning_rate_gradient_steps(
         one_dimension: OneDimensionSearch,
         max_epoch: int,
         eps: float,
-        current_position
+        current_position: ndarray
 ) -> float:
     t = np.linspace(0.01, 1, 100)
     epoches = np.array(
@@ -46,7 +46,7 @@ def fund_best_schedule(
         one_dimension: OneDimensionSearch,
         max_epoch: int,
         eps: float,
-        current_position
+        current_position: ndarray
 ):
     const_steps = np.linspace(0.01, 1, 100)
     epoches_const = np.array(

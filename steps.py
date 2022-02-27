@@ -30,7 +30,7 @@ class LinearStep(StepScheduler):
 
 class ParabolicStep(StepScheduler):
 
-    def __init__(self, k : float):
+    def __init__(self, k: float):
         self.k = k
 
     def step(self, i: int) -> float:
