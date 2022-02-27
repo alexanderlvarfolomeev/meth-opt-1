@@ -1,4 +1,3 @@
-from typing import List
 from abc import abstractmethod
 
 import numpy as np
@@ -60,3 +59,16 @@ class G(Graphic):
 
     def grad(self, x: ndarray) -> ndarray:
         return np.array([2 * x[0] - 3 * x[1] + 5, 8 * x[1] - 3 * x[0] - 1])
+
+
+class F2(Graphic):
+    def dimension(self):
+        return 3
+
+    def get(self, x: ndarray) -> float:
+        return np.sin(0.5 * x[0] ** 2 - 0.25 * x[1] ** 2 + 3) * np.cos(2 * x[0] + 1 - np.exp(x[1]))
+
+    def grad(self, x: ndarray) -> ndarray:
+        h = 1e-5
+        return np.array([(self.get(np.array([x[0] + h, x[1]])) - self.get(np.array([x[0] - h, x[1]]))) / (2 * h),
+                         (self.get(np.array([x[0], x[1] + h])) - self.get(np.array([x[0], x[1] - h]))) / (2 * h)])
