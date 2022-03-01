@@ -72,3 +72,20 @@ class F2(Graphic):
         h = 1e-5
         return np.array([(self.get(np.array([x[0] + h, x[1]])) - self.get(np.array([x[0] - h, x[1]]))) / (2 * h),
                          (self.get(np.array([x[0], x[1] + h])) - self.get(np.array([x[0], x[1] - h]))) / (2 * h)])
+
+
+class RandomGraphic(Graphic):
+    def __init__(self, n: int):
+        self.n = n
+        self.matrix = np.random.rand(n, n)
+
+    def dimension(self):
+        return self.n
+
+    def get(self, x: ndarray) -> float:
+        return np.dot(np.dot(self.matrix, x), x)
+
+    def grad(self, x: ndarray) -> ndarray:
+        return np.dot(self.matrix + np.transpose(self.matrix), x)
+
+
