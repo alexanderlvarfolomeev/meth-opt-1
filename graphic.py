@@ -77,7 +77,9 @@ class F2(Graphic):
 class RandomGraphic(Graphic):
     def __init__(self, n: int):
         self.n = n
-        self.matrix = np.random.rand(n, n)
+        random_matrix = np.random.rand(n, n)
+        self.matrix = np.dot(random_matrix, np.transpose(random_matrix))
+        self.dmatrix = self.matrix + np.transpose(self.matrix)
 
     def dimension(self):
         return self.n
@@ -86,6 +88,6 @@ class RandomGraphic(Graphic):
         return np.dot(np.dot(self.matrix, x), x)
 
     def grad(self, x: ndarray) -> ndarray:
-        return np.dot(self.matrix + np.transpose(self.matrix), x)
+        return np.dot(self.dmatrix, x)
 
 
