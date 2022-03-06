@@ -7,6 +7,9 @@ from numpy import ndarray
 
 class Graphic:
 
+    def __init__(self):
+        self.count = 0
+
     @abstractmethod
     def dimension(self):
         pass
@@ -19,15 +22,18 @@ class Graphic:
     def grad(self, x: ndarray) -> ndarray:
         pass
 
+    def clear(self):
+        self.count = 0
+
     def __call__(self, x: ndarray) -> float:
+        self.count += 1
         return self.get(x)
 
     # Supports only 3d
     def draw(self):
         fig = plt.figure()
-        fig.set_size_inches(20, 20)
-        dim_string = str(self.dimension()) + "d"
-        ax = fig.add_subplot(111, projection=dim_string)
+        # fig.set_size_inches(20, 20)
+        ax = fig.add_subplot(111, projection='3d')
         x = y = np.arange(-3.0, 3.0, 0.05)
         X, Y = np.meshgrid(x, y)
         zs = np.array([self(np.array([x, y])) for x, y in zip(np.ravel(X), np.ravel(Y))])
@@ -76,6 +82,7 @@ class F2(Graphic):
 
 class RandomGraphic(Graphic):
     def __init__(self, n: int):
+        super().__init__()
         self.n = n
         random_matrix = np.random.rand(n, n)
         self.matrix = np.dot(random_matrix, np.transpose(random_matrix))
