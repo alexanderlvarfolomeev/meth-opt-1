@@ -136,21 +136,26 @@ def find_best_parabolic_schedule(
         return None
 
 
-def test_task6(
+def test_different_argument_count(
         one_dimension: OneDimensionSearch,
         max_epoch: int,
+        avg_count: int,
         eps: float
 ):
     arg_counts = np.linspace(1, 10, 10)
     epoches = np.array(
-        [(gradient_steps(
-            RandomGraphic(round(arg_count)),
-            RateStep(0.19),
-            one_dimension,
-            max_epoch,
-            eps,
-            np.ones(round(arg_count)) * 20
-        ).size // arg_count)
-         for arg_count in arg_counts])
+        [np.average(
+            [(gradient_steps(
+                RandomGraphic(round(arg_count)),
+                RateStep(0.19),
+                one_dimension,
+                max_epoch,
+                eps,
+                np.ones(round(arg_count)) * 20
+            ).size // arg_count)
+             for _ in range(avg_count)]
+        )
+            for arg_count in arg_counts]
+    )
 
     draw1d(arg_counts, epoches)
