@@ -92,7 +92,8 @@ class RandomGraphic(Graphic):
         return self.n
 
     def get(self, x: ndarray) -> float:
-        return np.dot(np.dot(self.matrix, x), x)
+        res = np.sum(np.tensordot(self.matrix, x, axes=1) * x, axis=0)
+        return res.item() if res.shape == () else res
 
     def grad(self, x: ndarray) -> ndarray:
         return np.dot(self.dmatrix, x)
