@@ -23,9 +23,8 @@ def wolfe_analyzing(
     X, Y = np.meshgrid(c_1_array, c_2_array)
     print('creating analyzing data for F() function, c_1 in range [1e-7, 0.8], c_2 in range [0.1, 0.99]')
     Zs = np.array([
-        0 if c_1 > c_2 else len(
-            gradient_steps(F(), RateStep(0.1), WolfeCondition(c_1, c_2), iter_num, eps, start_pos)
-        )
+        0 if c_1 > c_2 else
+        gradient_steps(F(), RateStep(0.1), WolfeCondition(c_1, c_2), iter_num, eps, start_pos).shape[0]
         for c_1, c_2 in zip(np.ravel(X), np.ravel(Y))])
     print('got analyzed data')
     Z = Zs.reshape(len_y, len_x)
